@@ -31,9 +31,12 @@ counting_semaphore Sts(1);
 // only the last reader will RELEASE the Srw semaphore
 void read(string thName){
 
-    // Sts.acquire();
-    // std::this_thread::sleep_for(std::chrono::seconds(10));
-    // Sts.release();
+    //TURNSTILE
+    Sts.acquire();
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    Sts.release();
+
+
 
 	m.acquire();
 	readersCount++;
@@ -42,8 +45,10 @@ void read(string thName){
     }
     m.release();
 
+
     for (int i = 0; i < 50; i++){
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+        cout << thName;
     }
     
     m.acquire();
@@ -56,16 +61,18 @@ void read(string thName){
 
 void write(string thName){
 
-	// Sts.acquire();
-    // std::this_thread::sleep_for(std::chrono::seconds(10));
-    // Sts.release();
+    //TURNSTILE
+	Sts.acquire();
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    Sts.release();
+
+
 
     Srw.acquire();
-
     for (int i = 0; i < 50; i++){
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+        cout << thName;
     }
-
     Srw.release();
 }
 
@@ -74,19 +81,21 @@ void write(string thName){
 int main(){
 	cout << "//PROBLEM 4: readers-writers \n";
 
+    thread w1(write, "w1");
 	thread r1(read, "r1");
-	thread w1(write, "w1");
 	thread r2(read, "r2");
+    thread w2(write, "w2");
 	thread r3(read, "r3");
 	thread r4(read, "r4");
-	thread w2(write, "w2");
+	
 
+    w1.join();
 	r1.join();
-	w1.join();
 	r2.join();
+    w2.join();
 	r3.join();
 	r4.join();
-	w2.join();
+	
 
 	return 0;
 }
