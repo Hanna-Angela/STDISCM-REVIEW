@@ -1,8 +1,5 @@
-//PROBLEM 4: readers-writers problem
-// multiple readers can acess at once
-// only one writer can access at once
-// if a writer is writing, no reader can read
-// if a reader is reading, no writer can write
+//PROBLEM 5: dining philosophers
+// adjacent chopsticks only
 
 
 //note: critical  section is the PRIORITY.
@@ -57,7 +54,7 @@ void philosophize(int id){
         philosopher_Status[id] = 0;
 
 
-        
+
         // RELEASE
         m.acquire();
         chopstick_Status[id] = 0;
@@ -73,7 +70,7 @@ void philosophize(int id){
 
 
 int main(){
-	cout << "//PROBLEM 4: readers-writers \n";
+	cout << "//PROBLEM 5: dining philosophers \n";
 
     thread p0(philosophize, 0);
 	thread p1(philosophize, 1);
